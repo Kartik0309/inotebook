@@ -5,6 +5,7 @@ var jwt = require('jsonwebtoken');
 const app = express();
 const User=require('../models/User');
 const { body, validationResult } = require('express-validator');
+const fetchuser = require('../middleware/fetchuser');
 
 
 const JWT_TOKEN="inotebook#@123"
@@ -45,7 +46,7 @@ router.post(
 
 
 
-  //Authenticating A User using: POST "api/auth/login"
+//Authenticating A User using: POST "api/auth/login"
 router.post(
     '/login',
     // username must be an email
@@ -74,5 +75,20 @@ router.post(
       res.json({token});
     },
   );
+
+
+  //Route 3 to get Details of A User using POST. "/api/auth/getuser".Login Required
+  router.post('/getuser',fetchuser,async (req,res)=>{
+    try {
+      userId=req.user.id;
+      const user=await User.findById(userId).select("-password");
+      res.send(user);
+    } 
+    catch (error) {
+      console.log(error.message);
+      res.status(500).send("Internal Server Error");
+    }
+  })
+
 
 module.exports=router;
