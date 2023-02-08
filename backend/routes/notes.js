@@ -3,6 +3,8 @@ const router = express.Router();
 const fetchuser = require('../middleware/fetchuser');
 const Notes = require('../models/Notes');
 const { body, validationResult } = require('express-validator');
+const app=express();
+const bodyParser = require('body-parser')
 
 //Route 1 to get the all the notes of a particular user using GET
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
@@ -16,7 +18,7 @@ router.post('/addnewnote', fetchuser, async (req, res) => {
         body('title').exists,
         body('description').isLength({ min: 5 })
         const { title, description, tag } = req.body;
-        const errors = validationResult(req);
+        const errors = await validationResult(req);
         if (!errors.isEmpty()) {
             return res.status(400).json({ errors: errors.array() });
         }

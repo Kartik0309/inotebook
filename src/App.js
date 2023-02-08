@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import {
   BrowserRouter,
   Routes,
@@ -8,20 +8,24 @@ import Home from './components/Home';
 import Navbar from './components/Navbar';
 import About from './components/About';
 import NoteState from './context/notes/NoteState';
+import Alert from './components/Alert';
 function App() {
   return (
     <>
-    <NoteState>
-    <BrowserRouter>
-      <Navbar/>
-      <Routes>
-        <Route exact path="/" element={<Home/>} />
-        <Route exact path="/about" element={<About/>} />
-      </Routes>
-    </BrowserRouter>
-    </NoteState>
+      <NoteState>
+        <BrowserRouter>
+          <Navbar />
+          {/* <Alert message="This is an Alert!!" /> */}
+          <div className="container">
+            <Routes>
+              <Route exact path="/" element={<Home />} />
+              <Route exact path="/about" element={<About />} />
+            </Routes>
+          </div>
+        </BrowserRouter>
+      </NoteState>
     </>
   )
 }
 
-export default App
+export default App;
