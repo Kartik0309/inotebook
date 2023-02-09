@@ -8,7 +8,7 @@ const bodyParser = require('body-parser')
 
 //Route 1 to get the all the notes of a particular user using GET
 router.get('/fetchallnotes', fetchuser, async (req, res) => {
-    const notes = await Notes.find({ id: req.user.id });
+    const notes = await Notes.find({ user: req.user.id });
     res.json(notes);
 })
 

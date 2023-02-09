@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState,useContext } from "react";
 import NoteContext from "./NoteContext";
+import AuthContext from "../auth/AuthContext";
 
 const NoteState= (props)=>{
     const initial='http://localhost:5000/api';
     const notesInitial=[];
-    
+    const context=useContext(AuthContext);
+    const {authToken}=context;
     const [notes, setNotes] = useState(notesInitial);
 
     //Fetch All notes
@@ -15,7 +17,7 @@ const NoteState= (props)=>{
             mode: 'cors', // no-cors, *cors, same-origin
             headers: {
               'Content-Type': 'application/json',
-              'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGY3ODUyNWQyZmU1MDIzZGQwYTYxZSIsImlhdCI6MTY3NTYwMDkyN30.50FKIc6y3YPq9iPt9LuAs_otDxJmj4vGtuMO-nAaJak',
+              'token':authToken.token,
               // 'Content-Type': 'application/x-www-form-urlencoded',
             },
           });
@@ -33,7 +35,7 @@ const NoteState= (props)=>{
             mode: 'cors', // no-cors, *cors, same-origin
             headers: {
               'Content-Type': 'application/json',
-              'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGY3ODUyNWQyZmU1MDIzZGQwYTYxZSIsImlhdCI6MTY3NTYwMDkyN30.50FKIc6y3YPq9iPt9LuAs_otDxJmj4vGtuMO-nAaJak',
+              'token':authToken.token,
             },
             body: JSON.stringify({title,description,tag})
           });
@@ -60,7 +62,7 @@ const NoteState= (props)=>{
             mode: 'cors', // no-cors, *cors, same-origin
             headers: {
               'Content-Type': 'application/json',
-              'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGY3ODUyNWQyZmU1MDIzZGQwYTYxZSIsImlhdCI6MTY3NTYwMDkyN30.50FKIc6y3YPq9iPt9LuAs_otDxJmj4vGtuMO-nAaJak',
+              'token':authToken.token,
             },
           });
 
@@ -80,7 +82,7 @@ const NoteState= (props)=>{
             mode: 'cors', // no-cors, *cors, same-origin
             headers: {
               'Content-Type': 'application/json',
-              'token':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYzZGY3ODUyNWQyZmU1MDIzZGQwYTYxZSIsImlhdCI6MTY3NTYwMDkyN30.50FKIc6y3YPq9iPt9LuAs_otDxJmj4vGtuMO-nAaJak',
+              'token':authToken.token,
             },
             body: JSON.stringify({title,description,tag})
           });
