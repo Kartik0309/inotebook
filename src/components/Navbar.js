@@ -1,9 +1,12 @@
 import React, { useContext } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import AlertContext from '../context/alert/AlertContext';
 import AuthContext from '../context/auth/AuthContext';
 function Navbar() {
     const context=useContext(AuthContext);
     const navigate=useNavigate();
+    const context1 = useContext(AlertContext);
+    const {setAlert}=context1;
     const {authToken,setauthToken}=context;
     const location = useLocation();
     let val=location.pathname;
@@ -13,6 +16,7 @@ function Navbar() {
             login:false
         })
         navigate('/');
+        setAlert({type:"success",message:"Logout Successful"});
     }
     return (
         <>
@@ -25,10 +29,13 @@ function Navbar() {
                     <div className="collapse navbar-collapse" id="navbarSupportedContent">
                         <ul className="navbar-nav me-auto mb-2 mb-lg-0">
                             <li className="nav-item">
-                                <Link className={`nav-link ${val==='/'?'active':""}`} aria-current="page" to={`${authToken.login===true?'/home':'/'}`}>Home</Link>
+                                <Link className={`nav-link ${val==='/home'?'active':""}`} aria-current="page" to={`${authToken.login===true?'/home':'/'}`}>Home</Link>
                             </li>
-                            <button type="button" class={`btn btn-danger ${authToken.login!==true?'d-none':""}`} onClick={handleClick}>Logout</button>
+        
                         </ul>
+                        <form class="d-flex" role="search">
+                        <button type="button" class={`btn btn-danger ${authToken.token===""?'d-none':""}`} onClick={handleClick}>Logout</button>
+                        </form>
                     </div>
                 </div>
             </nav>

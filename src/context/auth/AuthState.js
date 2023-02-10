@@ -1,7 +1,10 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState,useContext } from "react";
+import AlertContext from "../alert/AlertContext";
 import AuthContext from "./AuthContext";
 const Authstate = (props) => {
     const [authToken, setauthToken] = useState({token:"",login:false});
+    const context1 = useContext(AlertContext);
+    const {setAlert}=context1;
     const initial = 'http://localhost:5000/api';
     const login = async (email, password) => {
         //API CALL
@@ -16,13 +19,11 @@ const Authstate = (props) => {
         });
         let data = await response.json();
         if (data.error) {
-            console.log(data.error);
+            setAlert({type:"danger",message:"Invalid Credentials"});
         }
         else {
-            setauthToken({
-                token:data.token,
-                login:true
-            })
+                const token=await data.token.toString();
+                setauthToken({login:true,token:token});
         }
     }
     const signup=async (name,email,password) => {
@@ -41,7 +42,9 @@ const Authstate = (props) => {
             console.log(data.error);
         }
         else {
-            console.log(authToken.token);
+            const token=await data.token.toString();
+            setauthToken({login:true,token:token});
+            setAlert({type:"success",message:"Signup Successful"});
         }
     }
     return (

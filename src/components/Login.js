@@ -1,12 +1,15 @@
 import React,{useContext,useState} from 'react'
 import { useNavigate } from 'react-router-dom';
+import AlertContext from '../context/alert/AlertContext';
 import AuthContext from '../context/auth/AuthContext'
 
 function Login(props) {
     const initial = 'http://localhost:5000/api';
     const context = useContext(AuthContext);
+    const context1 = useContext(AlertContext);
+    const {setAlert}=context1;
     let navigate = useNavigate();
-    const {login,authToken,setauthToken}=context;
+    const {login,authToken}=context;
     const [cred, setcred] = useState({email:"",password:""});
     const onChange=(e)=>{
         setcred({...cred,[e.target.name]:e.target.value})
@@ -14,33 +17,15 @@ function Login(props) {
     const handleClick=async (e)=>{
         e.preventDefault();
         console.log("click");
-        // login(cred.email,cred.password);
-        const {email,password}=cred;
-        const url = `${initial}/auth/login`
-        const response = await fetch(url, {
-            method: 'POST', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email, password })
-        });
-        let data = await response.json();
-        if (data.error) {
-            console.log(data.error);
-        }
-        else {
-            setauthToken({
-              login:true,
-              token:data.token
-            });
-        }
-        if(authToken.login===true)
+        login(cred.email,cred.password);
+        if(authToken.token!=="")
         {
+            setAlert({type:"success",message:"Login Successful"});
             navigate('/home');
         }
         else
         {
+            setAlert({type:"warning",message:"Please try Again!!"});
             navigate('/');
         }   
     }
@@ -49,6 +34,7 @@ function Login(props) {
     }
   return (
     <>
+    <div className="card my-5">
     <div className="container my-3">
         <h2>Login</h2>
     <form onSubmit={handleClick}>
@@ -65,6 +51,7 @@ function Login(props) {
   <button type="button" className="btn btn-primary mx-5 " onClick={handlesignup}>Signup</button>
 </form>
 
+    </div>
     </div>
     </>
   )
